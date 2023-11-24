@@ -89,3 +89,32 @@ const obj = setValue({}, 'a.b.c.d.e', 22);
 console.log(JSON.stringify(obj))
 
 
+// Updated code for updating json with given value i.e. setValue
+
+
+function processObject1(obj, key, value, keysArray, idx) {
+    if(idx == keysArray.length) {
+        obj[keysArray[idx-1]] = value;
+        return obj;
+    }
+    if(!obj[key]) {
+        obj[key] = {};
+    } 
+    if(typeof obj[key] === 'object') {
+        let response = processObject1(obj[key], keysArray[idx], value, keysArray, idx+1);
+        obj[key] = response;
+        return obj;
+    }
+    return obj;
+}
+
+function setValue1(obj, str, value) {
+    const keysArray = str.split("."); //['a', 'b', 'c']
+    // keysArray.push(null);
+    return processObject1(obj, keysArray[0], value, keysArray, 1);
+
+}
+
+const obj1 = setValue1({a: {b: {x: 10}}}, 'a.b.c.d.e', 22);
+
+console.log(JSON.stringify(obj1))
